@@ -1,8 +1,8 @@
-# ⚡ Bandwidth Hero Proxy 2
+# ⚡ Bandwidth Hero Proxy 2 (With Vercel!)
 
 > A **serverless** image compression proxy — faster, leaner, and always on.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/himshim/bandwidth-hero-proxy2)
+// The repository this is forkerd from uses netlify. This one is modified to work with vercel :). 
 ![JavaScript](https://img.shields.io/badge/JavaScript-80.8%25-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![License](https://img.shields.io/github/license/himshim/bandwidth-hero-proxy2?style=flat-square)
 ![Forks](https://img.shields.io/github/forks/himshim/bandwidth-hero-proxy2?style=flat-square)
@@ -23,6 +23,8 @@ Forked from [adi-g15/bandwidth-hero-proxy](https://github.com/adi-g15/bandwidth-
 
 > **Recommended:** Use **Bandwidth Guardian** — it is a full Manifest V3 rewrite built specifically for this proxy, with support for `quality=`, `max_width=`, progressive JPEG output, and CDN caching.
 
+**If using Bandwith Guardian** - I have hardcoded extreme compression in the proxy request itself so the settings inside of the extension does not do much. :) 
+
 ---
 
 ## How It Works
@@ -41,32 +43,30 @@ Powered by [Sharp](https://github.com/lovell/sharp) for fast, high-quality image
 
 ## Why Serverless?
 
-| | Traditional (e.g. Heroku) | This (Netlify Functions) |
+| | Traditional (e.g. Heroku) | This (Vercel Functions) |
 |---|---|---|
 | Cold start | Slow — server sleeps after inactivity | ✅ Always warm |
 | Initial request speed | Delayed by wake-up time | ✅ Fast |
-| Maintenance | Needs uptime monitoring | ✅ Managed by Netlify |
+| Maintenance | Needs uptime monitoring | ✅ Managed by Vercel |
 | Cost | Paid dynos or slow free tier | ✅ Free tier available |
 
 ---
 
 ## Deployment
-
-### One-Click Deploy to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/himshim/bandwidth-hero-proxy2)
-
-Click the button above. Netlify will clone this repo to your account and deploy it automatically.
+1) Fork this Repository.
+2) Create/ Login to your vercel account.
+3) Connect Github.
+4) Deploy.
 
 ### Configure the Extension
 
 After deployment, open the **Bandwidth Guardian** extension settings and set the **Proxy URL** to:
 
 ```
-https://your-netlify-domain.netlify.app/api/index
+https://your-vercel-domain.vercel.app/api/index
 ```
 
-Replace `your-netlify-domain` with the subdomain Netlify assigned to your deployment.
+Replace `your-vercel-domain` with the subdomain Vercel assigned to your deployment.
 
 ---
 
@@ -94,7 +94,8 @@ bandwidth-hero-proxy2/
 ├── functions/        # Netlify serverless function (the compression logic)
 ├── tests/            # Test suite
 ├── util/             # Utility helpers
-├── netlify.toml      # Netlify configuration
+├── api/              # Contains index.js new loc for Vercel to work instead of Netlify.
+├── vercel.json       # Vercel configuration
 ├── package.json      # Dependencies
 └── index.html        # Landing page
 ```
@@ -106,7 +107,7 @@ bandwidth-hero-proxy2/
 - **Runtime:** Node.js (Netlify Functions)
 - **Image processing:** [Sharp](https://github.com/lovell/sharp)
 - **Output formats:** WebP, JPEG (progressive)
-- **Platform:** [Netlify](https://netlify.com)
+- **Platform:** [Vercel](https://vercel.com)
 
 ---
 
