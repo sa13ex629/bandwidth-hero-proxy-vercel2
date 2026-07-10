@@ -8,7 +8,7 @@ const fetch          = require("node-fetch");
 const shouldCompress = require("../util/shouldCompress");
 const compress       = require("../util/compress");
 
-const DEFAULT_QUALITY = 40;
+const DEFAULT_QUALITY = 15;
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin":  "*",
@@ -78,13 +78,14 @@ module.exports = async (req, res) => {
     return res.end("Forbidden");
   }
 
-  const useWebp   = s !== "1";
-  const grayscale = o === "1";
-  const quality   = parseInt(q || l, 10) || DEFAULT_QUALITY;
-  const maxWidth  = parseInt(mw, 10) || 0;
+   // Hardcoding values from very aggresive compression. :)
+  const useWebp   = true; // Force WebP format always
+  const grayscale = o === "1"; // BnW Toggle 
+  const quality   = 15;   // Ignore extension, force extreme 15% quality
+  const maxWidth  = 600;  // Ignore extension, force images down to 600px width
 
-  // Vercel doesn't give you e.ip directly — pull the client IP from headers
-  // or the raw socket instead.
+  // Vercel doesn't give e.ip directly.
+  
   const clientIp =
     (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
     req.socket?.remoteAddress ||
