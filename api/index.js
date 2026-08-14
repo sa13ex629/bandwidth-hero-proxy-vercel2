@@ -8,7 +8,7 @@ const fetch          = require("node-fetch");
 const shouldCompress = require("../util/shouldCompress");
 const compress       = require("../util/compress");
 
-const DEFAULT_QUALITY = 75;
+const DEFAULT_QUALITY = 80;
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin":  "*",
@@ -78,14 +78,13 @@ module.exports = async (req, res) => {
     return res.end("Forbidden");
   }
 
-   // Hardcoding values from very aggresive compression. :)
-  const useWebp   = true; // Force WebP format always
+  // ---- Dynamic & Smart Compression Settings ----
+  const useWebp   = !s; // Respect jpeg setting if passed
   const grayscale = o === "1"; // BnW Toggle 
-  const quality   = 15;   // Ignore extension, force extreme 15% quality
-  const maxWidth  = 600;  // Ignore extension, force images down to 600px width
+  const quality   = parseInt(q, 10) || DEFAULT_QUALITY; // Read quality from app/URL, fallback to 80
+  const maxWidth  = parseInt(mw, 10) || 1200; // Allow full resolution up to 1200px width for HD manga
 
   // Vercel doesn't give e.ip directly.
-  
   const clientIp =
     (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
     req.socket?.remoteAddress ||
@@ -158,6 +157,28 @@ module.exports = async (req, res) => {
 
     if (err) {
       console.log("Compression failed:", r);
+      throw err;
+    }
+
+    console.log(
+      `From ${originalSize}, saved: ${((originalSize - output.length) / originalSize * 100).toFixed(1)}%`
+    );
+
+    res.writeHead(200, {
+      ...CORS_HEADERS,
+      ...CACHE_HEADERS,
+      "content-encoding": "identity",
+      ...compressedHeaders,
+    });
+    return res.end(output);
+
+  } catch (err) {
+    console.error(err);
+    res.writeHead(500, CORS_HEADERS);
+    return res.end(err.message || "");
+  }
+};
+
       throw err;
     }
 
