@@ -178,25 +178,3 @@ module.exports = async (req, res) => {
     return res.end(err.message || "");
   }
 };
-
-      throw err;
-    }
-
-    console.log(
-      `From ${originalSize}, saved: ${((originalSize - output.length) / originalSize * 100).toFixed(1)}%`
-    );
-
-    res.writeHead(200, {
-      ...CORS_HEADERS,
-      ...CACHE_HEADERS,
-      "content-encoding": "identity",
-      ...compressedHeaders,
-    });
-    return res.end(output);
-
-  } catch (err) {
-    console.error(err);
-    res.writeHead(500, CORS_HEADERS);
-    return res.end(err.message || "");
-  }
-};
