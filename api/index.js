@@ -8,7 +8,7 @@ const fetch          = require("node-fetch");
 const shouldCompress = require("../util/shouldCompress");
 const compress       = require("../util/compress");
 
-const DEFAULT_QUALITY = 15;
+const DEFAULT_QUALITY = 75;
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin":  "*",
